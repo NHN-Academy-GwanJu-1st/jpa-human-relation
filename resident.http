@@ -1,0 +1,23 @@
+POST /residents HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+
+{
+  "name": "강명관",
+  "residentRegistrationNumber": "981113-1234567",
+  "genderCode": "남",
+  "birthDate": "1998-11-13T00:00:00",
+  "birthPlaceCode": "병원",
+  "registrationBaseAddress": "광주광역시"
+}
+
+###
+
+PUT /residents/17
+Content-Type: application/json
+Host: localhost:8080
+
+{
+  "name": "updateTestName",
+  "registrationBaseAddress": "updateTestAddress"
+}

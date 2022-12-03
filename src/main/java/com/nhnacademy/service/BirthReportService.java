@@ -5,9 +5,9 @@ import com.nhnacademy.entity.BirthDeathReportResident;
 
 public interface BirthReportService {
 
-    BirthDeathReportResident registerBirthReport(Long serialNumber, BirthReportDTO birthReportDTO);
+    BirthDeathReportResident registerBirthReport(BirthReportDTO birthReportDTO);
 
-    BirthDeathReportResident modifyBirthReport(Long serialNumber, Long targetSerialNumber, BirthReportDTO birthReportDTO);
+    BirthDeathReportResident modifyBirthReport(Long targetSerialNumber, BirthReportDTO birthReportDTO);
 
-    void deleteBirthReport(Long serialNumber, Long targetSerialNumber);
+    void deleteBirthReport(Long targetSerialNumber);
 }

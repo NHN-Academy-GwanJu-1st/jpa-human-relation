@@ -6,6 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Builder
 @NoArgsConstructor
@@ -57,7 +58,7 @@ public class BirthDeathReportResident {
         private String birthDeathTypeCode;
     }
 
-    public void updateBirthReportInfo(String emailAddress, String phoneNumber) {
+    public void updateReportInfo(String emailAddress, String phoneNumber) {
         if (emailAddress != null) {
             this.emailAddress = emailAddress;
         }

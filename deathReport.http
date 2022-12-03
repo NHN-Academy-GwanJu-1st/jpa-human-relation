@@ -1,20 +1,21 @@
-POST /residents/birth
+POST /residents/death
 Host: localhost:8080
 Content-Type: application/json
 
 {
   "residentSerialNumber": 10,
-  "birthDeathTypeCode": "출생",
+  "birthDeathTypeCode": "사망",
   "reportResidentSerialNumber": 8,
   "birthDeathReportDate": "1998-11-13T00:00:00",
-  "birthReportQualificationsCode": "부",
+  "deathReportQualificationsCode": "모",
   "emailAddress": "nhn@academy.com",
   "phoneNumber": "010-1234-5678"
 }
 
+
 ###
 
-PUT /residents/birth/10
+PUT /residents/death/10
 Host: localhost:8080
 Content-Type: application/json
 
@@ -25,5 +26,5 @@ Content-Type: application/json
 
 ###
 
-DELETE /residents/birth/10
+DELETE /residents/death/10
 Host: localhost:8080

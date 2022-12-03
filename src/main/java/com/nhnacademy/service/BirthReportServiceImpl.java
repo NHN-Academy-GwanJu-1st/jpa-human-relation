@@ -4,12 +4,13 @@ import com.nhnacademy.domain.BirthReportDTO;
 import com.nhnacademy.entity.BirthDeathReportResident;
 import com.nhnacademy.entity.Resident;
 import com.nhnacademy.exception.NotFoundResidentException;
-import com.nhnacademy.repository.BirthReportRepository;
+import com.nhnacademy.repository.BirthDeathReportResidentRepository;
 import com.nhnacademy.repository.ResidentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.sql.Date;
 import java.util.Objects;
 
 @RequiredArgsConstructor
@@ -18,16 +19,18 @@ import java.util.Objects;
 public class BirthReportServiceImpl implements BirthReportService {
 
     private final ResidentRepository residentRepository;
-    private final BirthReportRepository birthReportRepository;
+    private final BirthDeathReportResidentRepository birthReportRepository;
+
+    private static final String BIRTH_TYPE_CODE = "출생";
 
     @Override
-    public BirthDeathReportResident registerBirthReport(Long serialNumber, BirthReportDTO birthReportDTO) {
+    public BirthDeathReportResident registerBirthReport(BirthReportDTO birthReportDTO) {
 
         // serialNumber -> 신고한사람
         // birthReportDTO.getReportResidentSerialNumber = serialNumber;
         // birthReportDTO.getResidentSerialNumber -> 신고 당한 사람 즉, 태어나거나 죽은 사람
 
-        Resident reportResident = residentRepository.findById(serialNumber).orElseThrow(NotFoundResidentException::new);
+        Resident reportResident = residentRepository.findById(birthReportDTO.getReportResidentSerialNumber()).orElseThrow(NotFoundResidentException::new);
         Resident targetResident = residentRepository.findById(birthReportDTO.getResidentSerialNumber()).orElseThrow(NotFoundResidentException::new);
 
 
@@ -45,24 +48,24 @@ public class BirthReportServiceImpl implements BirthReportService {
     }
 
     @Override
-    public BirthDeathReportResident modifyBirthReport(Long serialNumber, Long targetSerialNumber, BirthReportDTO birthReportDTO) {
+    public BirthDeathReportResident modifyBirthReport(Long targetSerialNumber, BirthReportDTO birthReportDTO) {
 
         BirthDeathReportResident birthReport =
-                birthReportRepository.findByPk_ResidentSerialNumberAndReportResidentSerialNumber_ResidentSerialNumber(targetSerialNumber, serialNumber);
+                birthReportRepository.findByPk_ResidentSerialNumberAndPk_BirthDeathTypeCode(targetSerialNumber, BIRTH_TYPE_CODE);
 
         if (Objects.isNull(birthReport)) {
             throw new NotFoundResidentException();
         }
 
-        birthReport.updateBirthReportInfo(birthReportDTO.getEmailAddress(), birthReportDTO.getPhoneNumber());
+        birthReport.updateReportInfo(birthReportDTO.getEmailAddress(), birthReportDTO.getPhoneNumber());
 
         return birthReportRepository.save(birthReport);
     }
 
     @Override
-    public void deleteBirthReport(Long serialNumber, Long targetSerialNumber) {
+    public void deleteBirthReport(Long targetSerialNumber) {
         birthReportRepository
-                .deleteByPk_ResidentSerialNumberAndReportResidentSerialNumber_ResidentSerialNumber(targetSerialNumber, serialNumber);
+                .deleteByPk_ResidentSerialNumberAndPk_BirthDeathTypeCode(targetSerialNumber, BIRTH_TYPE_CODE);
 
     }
 }

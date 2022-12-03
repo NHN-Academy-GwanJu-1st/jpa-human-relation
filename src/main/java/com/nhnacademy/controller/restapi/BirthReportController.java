@@ -18,7 +18,21 @@ public class BirthReportController {
     @PostMapping
     public BirthDeathReportResident registerBirthReport(@PathVariable(name = "serialNumber") Long serialNumber,
                                                         @RequestBody BirthReportDTO birthReportDTO) {
-//        return birthReportService.
-        return null;
+        return birthReportService.registerBirthReport(serialNumber, birthReportDTO);
     }
+
+    @PutMapping("/{targetSerialNumber}")
+    public BirthDeathReportResident modifyBirthReport(@PathVariable(name = "serialNumber") Long serialNumber,
+                                                      @PathVariable(name = "targetSerialNumber") Long targetSerialNumber,
+                                                      @RequestBody BirthReportDTO birthReportDTO) {
+        return birthReportService.modifyBirthReport(serialNumber, targetSerialNumber, birthReportDTO);
+    }
+
+    @DeleteMapping("/{targetSerialNumber}")
+    public void deleteBirthReport(@PathVariable(name = "serialNumber") Long serialNumber,
+                                  @PathVariable(name = "targetSerialNumber") Long targetSerialNumber) {
+        birthReportService.deleteBirthReport(serialNumber, targetSerialNumber);
+    }
+
+
 }

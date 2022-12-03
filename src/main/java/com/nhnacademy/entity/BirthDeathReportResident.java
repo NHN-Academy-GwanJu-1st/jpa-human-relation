@@ -1,11 +1,13 @@
 package com.nhnacademy.entity;
 
+import com.mysql.cj.log.Log;
 import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -16,13 +18,16 @@ public class BirthDeathReportResident {
     @EmbeddedId
     private Pk pk;
 
+    // 출생 or 사망한 사람
     @MapsId("residentSerialNumber")
     @ManyToOne
     @JoinColumn(name = "resident_serial_number")
     private Resident resident;
 
+    // 신고한 사람
+    @ManyToOne
     @JoinColumn(name = "report_resident_serial_number")
-    private Long reportResidentSerialNumber;
+    private Resident reportResidentSerialNumber;
 
     @Column(name = "birth_death_report_date")
     private LocalDateTime birthDeathReportDate;
@@ -50,6 +55,16 @@ public class BirthDeathReportResident {
 
         @Column(name = "birth_death_type_code")
         private String birthDeathTypeCode;
+    }
+
+    public void updateBirthReportInfo(String emailAddress, String phoneNumber) {
+        if (emailAddress != null) {
+            this.emailAddress = emailAddress;
+        }
+
+        if (phoneNumber != null) {
+            this.phoneNumber = phoneNumber;
+        }
     }
 
 }

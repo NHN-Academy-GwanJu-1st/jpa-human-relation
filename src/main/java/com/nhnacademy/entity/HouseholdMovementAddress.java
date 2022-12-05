@@ -1,14 +1,13 @@
 package com.nhnacademy.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+@ToString
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -22,18 +21,16 @@ public class HouseholdMovementAddress {
     @MapsId("householdSerialNumber")
     @ManyToOne
     @JoinColumn(name = "household_serial_number")
-    private Household householdSerialNumber;
-
-//    @Id
-//    @Column(name = "house_movement_report_date")
-//    private LocalDateTime houseMovementReportDate;
+    private Household household;
 
     @Column(name = "house_movement_address")
     private String houseMovementAddress;
 
+    @Setter
     @Column(name = "last_address_yn")
-    private char lastAddressYn; /* default 'Y' */
+    private char lastAddressYn;
 
+    @ToString
     @NoArgsConstructor
     @AllArgsConstructor
     @EqualsAndHashCode

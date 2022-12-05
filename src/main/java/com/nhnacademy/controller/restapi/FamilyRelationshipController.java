@@ -16,23 +16,23 @@ public class FamilyRelationshipController {
 
     @PostMapping("/relationship")
     public com.nhnacademy.entity.FamilyRelationship registerFamilyRelationship(@PathVariable(name = "serialNumber") Long serialNumber,
-                                                                               @RequestBody FamilyRelationshipDTO familyRelationshipDTO) {
+                                                                               @RequestBody FamilyRelationshipDTO familyRelationshipRequest) {
 
-        return familyRelationshipService.registerFamilyRelationship(serialNumber, familyRelationshipDTO);
+        return familyRelationshipService.registerFamilyRelationship(serialNumber, familyRelationshipRequest);
 
     }
 
     @PutMapping("/relationship/{familySerialNumber}")
     public com.nhnacademy.entity.FamilyRelationship modifyFamilyRelationship(@PathVariable(name = "serialNumber") Long serialNumber,
                                                                              @PathVariable(name = "familySerialNumber") Long familySerialNumber,
-                                                                             @RequestBody FamilyRelationshipDTO familyRelationshipDTO) {
+                                                                             @RequestBody FamilyRelationshipDTO familyRelationshipRequest) {
 
-        return familyRelationshipService.modifyFamilyRelationship(familySerialNumber, serialNumber, familyRelationshipDTO);
+        return familyRelationshipService.modifyFamilyRelationship(serialNumber, familySerialNumber, familyRelationshipRequest);
     }
 
     @DeleteMapping("/relationship/{familySerialNumber}")
     public void deleteFamilyRelationship(@PathVariable(name = "serialNumber") Long serialNumber,
                                          @PathVariable(name = "familySerialNumber") Long familySerialNumber) {
-        familyRelationshipService.deleteFamilyRelationship(familySerialNumber, serialNumber);
+        familyRelationshipService.deleteFamilyRelationship(serialNumber, familySerialNumber);
     }
 }

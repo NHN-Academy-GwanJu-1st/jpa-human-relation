@@ -1,6 +1,5 @@
 package com.nhnacademy.controller.restapi;
 
-import com.nhnacademy.domain.BirthReportDTO;
 import com.nhnacademy.domain.DeathReportDTO;
 import com.nhnacademy.entity.BirthDeathReportResident;
 import com.nhnacademy.service.DeathReportService;

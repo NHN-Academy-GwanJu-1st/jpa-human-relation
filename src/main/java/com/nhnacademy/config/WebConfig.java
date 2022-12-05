@@ -9,10 +9,8 @@ import org.springframework.context.MessageSourceAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
@@ -20,6 +18,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
+
+import java.util.List;
 
 @EnableWebMvc
 @Configuration
@@ -45,6 +45,11 @@ public class WebConfig implements WebMvcConfigurer, ApplicationContextAware, Mes
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+    }
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(new PageableHandlerMethodArgumentResolver());
     }
 
     @Bean

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<style>
+    .pageNumber {
+        margin-right: 5px;
+        color: black;
+        text-decoration: none;
+    }
+
+    .active a {
+        color: coral;
+    }
+</style>
+<body>
+<h1>index</h1>
+
+<div style="display: flex; justify-content: center;">
+    <table border="1" style="width: 1400px; border-collapse: collapse; text-align: center">
+        <thead>
+            <tr>
+                <td style="width: 80px">번호</td>
+                <td>이름</td>
+                <td style="width: 100px">성별</td>
+                <td style="width: 140px">생일</td>
+                <td>가족관계증명서</td>
+                <td>주민등록등본</td>
+                <td>출생신고서</td>
+                <td>사망신고서</td>
+            </tr>
+        </thead>
+
+        <tbody>
+        <th:block th:each="resident : ${residents}">
+            <tr>
+                <td th:text="${resident.residentSerialNumber}"></td>
+                <td th:text="${resident.name}"></td>
+                <td th:text="${resident.genderCode}"></td>
+                <td th:text="${resident.birthDate}"></td>
+                <td>
+                    <a th:href="'/family/' + ${resident.residentSerialNumber}">가족관계증명서</a>
+                </td>
+                <td>주민등록등본</td>
+                <td>출생신고서</td>
+                <td>사망신고서</td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+
+    <br>
+    <br>
+
+</div>
+
+<div style="display: flex; align-items: center; justify-content: center">
+    <th:block th:if="${page.prev == true}">
+        <a th:href="'/?pageNum=' + ${page.pageNum - 10} + '&size=' + ${page.size}" style="margin-right: 5px">&#5130;</a>
+    </th:block>
+
+    <th:block th:each="num : *{#numbers.sequence(page.pageStart, page.pageEnd - 1)}">
+        <div th:classappend="${page.pageNum == num} ? 'active' : ''">
+            <a class="pageNumber" th:href="'/?page=' + ${num} + '&size=' + ${page.size}" th:text="${num}"></a>
+        </div>
+    </th:block>
+
+    <th:block th:if="${page.next == true}">
+        <a th:href="'/?page=' + ${page.pageNum + 10} + '&size=' + ${page.size}">&#5125;</a>
+    </th:block>
+</div>
+
+</body>
+</html>

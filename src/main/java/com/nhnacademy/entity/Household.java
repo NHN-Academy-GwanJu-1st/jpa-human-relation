@@ -1,13 +1,14 @@
 package com.nhnacademy.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@ToString
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -16,11 +17,13 @@ import java.util.List;
 public class Household {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "household_serial_number")
     private Long householdSerialNumber;
 
+    @ManyToOne
     @JoinColumn(name = "household_resident_serial_number")
-    private Long householdResidentSerialNumber;
+    private Resident householdResidentSerialNumber;
 
     @Column(name = "household_composition_date")
     private LocalDateTime householdCompositionDate;
@@ -31,9 +34,11 @@ public class Household {
     @Column(name = "current_house_movement_address")
     private String currentHouseMovementAddress;
 
-    @OneToMany(mappedBy = "household")
+    @JsonIgnore
+    @OneToMany(mappedBy = "household", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<HouseholdCompositionResident> householdCompositionResidents;
 
-    @OneToMany(mappedBy = "householdSerialNumber")
+    @JsonIgnore
+    @OneToMany(mappedBy = "household", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<HouseholdMovementAddress> householdMovementAddresses;
 }

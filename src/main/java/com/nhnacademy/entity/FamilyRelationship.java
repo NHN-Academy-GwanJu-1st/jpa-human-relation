@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 
+@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,9 +17,9 @@ public class FamilyRelationship {
     @EmbeddedId
     private Pk pk;
 
-    @MapsId("baseResidentSerialNumber")
+    @MapsId("familyResidentSerialNumber")
     @ManyToOne
-    @JoinColumn(name = "base_resident_serial_number")
+    @JoinColumn(name = "family_resident_serial_number")
     private Resident resident;
 
     @Setter

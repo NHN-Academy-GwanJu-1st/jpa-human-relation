@@ -1,6 +1,7 @@
 package com.nhnacademy.service;
 
 import com.nhnacademy.domain.FamilyRelationshipDTO;
+import com.nhnacademy.domain.report.FamilyRelationshipReportDTO;
 import com.nhnacademy.entity.FamilyRelationship;
 import com.nhnacademy.entity.Resident;
 import com.nhnacademy.exception.NotFoundResidentException;
@@ -11,7 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -23,14 +27,14 @@ public class FamilyRelationshipServiceImpl implements FamilyRelationshipService 
     private final FamilyRelationshipRepository familyRelationshipRepository;
 
     @Override
-    public FamilyRelationship registerFamilyRelationship(Long serialNumber, FamilyRelationshipDTO familyRelationshipDTO) {
+    public FamilyRelationship registerFamilyRelationship(Long serialNumber, FamilyRelationshipDTO familyRelationshipRequest) {
 
         Resident resident = residentRepository.findById(serialNumber).orElseThrow(NotFoundResidentException::new);
 
         FamilyRelationship familyRelationship = new FamilyRelationship().builder()
-                .pk(new FamilyRelationship.Pk(familyRelationshipDTO.getFamilySerialNumber(), serialNumber))
+                .pk(new FamilyRelationship.Pk(serialNumber, familyRelationshipRequest.getFamilySerialNumber()))
                 .resident(resident)
-                .familyRelationshipCode(familyRelationshipDTO.getFamilyRelationshipCode())
+                .familyRelationshipCode(familyRelationshipRequest.getFamilyRelationshipCode())
                 .build();
 
 
@@ -38,7 +42,7 @@ public class FamilyRelationshipServiceImpl implements FamilyRelationshipService 
     }
 
     @Override
-    public FamilyRelationship modifyFamilyRelationship(Long familySerialNumber, Long serialNumber, FamilyRelationshipDTO familyRelationshipDTO) {
+    public FamilyRelationship modifyFamilyRelationship(Long familySerialNumber, Long serialNumber, FamilyRelationshipDTO familyRelationshipRequest) {
 
         FamilyRelationship familyRelationship = familyRelationshipRepository
                 .findByPk_FamilyResidentSerialNumberAndPk_BaseResidentSerialNumber(familySerialNumber, serialNumber);
@@ -47,11 +51,7 @@ public class FamilyRelationshipServiceImpl implements FamilyRelationshipService 
             throw new NotFoundResidentException();
         }
 
-        log.info("FamilyRelationshipDTO {}", familyRelationshipDTO);
-
-
-        familyRelationship.setFamilyRelationshipCode(familyRelationshipDTO.getFamilyRelationshipCode());
-
+        familyRelationship.setFamilyRelationshipCode(familyRelationshipRequest.getFamilyRelationshipCode());
 
         return familyRelationshipRepository.save(familyRelationship);
     }
@@ -69,4 +69,28 @@ public class FamilyRelationshipServiceImpl implements FamilyRelationshipService 
         familyRelationshipRepository
                 .deleteByPk_FamilyResidentSerialNumberAndPk_BaseResidentSerialNumber(familySerialNumber, serialNumber);
     }
+
+
+    @Override
+    public List<FamilyRelationship> findByFamilySerialNumber(Long serialNumber) {
+        return null;
+    }
+
+    @Override
+    public List<FamilyRelationshipReportDTO> getFamilyRelationNumberAndCode(Long serialNumber) {
+        List<FamilyRelationshipDTO> familyRelationshipDTOList = familyRelationshipRepository.getFamilyRelationNumberAndCode(serialNumber);
+        List<FamilyRelationshipReportDTO> result = new ArrayList<>();
+
+        familyRelationshipDTOList.stream().forEach(familyRelationshipDTO -> {
+            result.add(
+                    new FamilyRelationshipReportDTO(
+                            familyRelationshipDTO.getFamilyRelationshipCode(),
+                            residentRepository.findById(familyRelationshipDTO.getFamilySerialNumber()).get()
+                    )
+            );
+        });
+
+        return result;
+    }
+
 }

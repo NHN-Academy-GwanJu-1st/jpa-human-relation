@@ -1,9 +1,7 @@
 package com.nhnacademy.controller.restapi;
 
-import com.nhnacademy.domain.FamilyRelationshipDTO;
 import com.nhnacademy.domain.ResidentModifyDTO;
 import com.nhnacademy.domain.ResidentRegisterDTO;
-import com.nhnacademy.entity.FamilyRelationship;
 import com.nhnacademy.entity.Resident;
 import com.nhnacademy.service.ResidentService;
 import lombok.extern.slf4j.Slf4j;

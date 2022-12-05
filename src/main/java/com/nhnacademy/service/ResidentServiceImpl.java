@@ -4,10 +4,11 @@ import com.nhnacademy.domain.ResidentModifyDTO;
 import com.nhnacademy.domain.ResidentRegisterDTO;
 import com.nhnacademy.entity.Resident;
 import com.nhnacademy.exception.NotFoundResidentException;
-import com.nhnacademy.repository.FamilyRelationshipRepository;
 import com.nhnacademy.repository.ResidentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -55,5 +56,13 @@ public class ResidentServiceImpl implements ResidentService {
         return residentRepository.save(resident);
     }
 
+    @Override
+    public Page<Resident> findAll(Pageable pageable) {
+        return residentRepository.findAll(pageable);
+    }
 
+    @Override
+    public Resident findById(Long serialNumber) {
+        return residentRepository.findById(serialNumber).orElseThrow(NotFoundResidentException::new);
+    }
 }

@@ -1,6 +1,5 @@
 package com.nhnacademy.service;
 
-import com.nhnacademy.domain.BirthReportDTO;
 import com.nhnacademy.domain.DeathReportDTO;
 import com.nhnacademy.entity.BirthDeathReportResident;
 import com.nhnacademy.entity.Resident;
@@ -11,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.sql.Date;
 import java.util.Objects;
 
 @RequiredArgsConstructor

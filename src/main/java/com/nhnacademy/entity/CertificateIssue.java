@@ -18,8 +18,9 @@ public class CertificateIssue {
     @Column(name = "certificate_confirmation_number")
     private Long certificateConfirmationNumber;
 
+    @ManyToOne
     @JoinColumn(name = "resident_serial_number")
-    private Long residentSerialNumber;
+    private Resident resident;
 
     @Column(name = "certificate_type_code")
     private String certificateTypeCode;

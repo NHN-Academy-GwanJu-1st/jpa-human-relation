@@ -29,13 +29,11 @@ public class HouseholdMovementAddressRepositoryImpl extends QuerydslRepositorySu
     public List<HouseholdMovementAddress> getMovementAddressByResidentSerialNumber(Long residentSerialNumber) {
 
         QHouseholdMovementAddress householdMovementAddress = QHouseholdMovementAddress.householdMovementAddress;
-        QHousehold household = QHousehold.household;
 
-        return from(household)
+        return from(householdMovementAddress)
                 .select(householdMovementAddress)
-                .innerJoin(household, householdMovementAddress.household)
-                .where(household.householdResidentSerialNumber.residentSerialNumber.eq(residentSerialNumber))
+                .where(householdMovementAddress.household.householdResidentSerialNumber.residentSerialNumber.eq(residentSerialNumber))
+                .orderBy(householdMovementAddress.lastAddressYn.desc())
                 .fetch();
-//        return null;
     }
 }

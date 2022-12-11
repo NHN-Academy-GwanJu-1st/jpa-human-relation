@@ -12,6 +12,9 @@ import java.time.LocalDateTime;
 public class ResidentRegisterDTO {
 
     private String name;
+    private String id;
+    private String password;
+    private String email;
     private String residentRegistrationNumber;
     private String genderCode;
     private LocalDateTime birthDate;

@@ -3,6 +3,8 @@ package com.nhnacademy.service;
 import com.nhnacademy.domain.HouseholdDTO;
 import com.nhnacademy.entity.Household;
 
+import java.util.List;
+
 public interface HouseholdService {
 
     Household registerHousehold(HouseholdDTO householdDTO);

@@ -21,6 +21,8 @@ public class ResidentController {
 
     @PostMapping
     public Resident registerResident(@RequestBody ResidentRegisterDTO residentRegisterDTO) {
+
+        System.out.println(residentRegisterDTO);
         return residentService.registerResident(residentRegisterDTO);
     }
 

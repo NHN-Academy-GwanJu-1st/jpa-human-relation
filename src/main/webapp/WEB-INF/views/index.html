@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -19,9 +21,26 @@
 <body>
 <h1>index</h1>
 
-<div style="display: flex; justify-content: center;">
-    <table border="1" style="width: 1400px; border-collapse: collapse; text-align: center">
-        <thead>
+<div sec:authorize="!hasAuthority('Resident')">
+    <a href="/loginForm">Login</a>
+
+    <a href="https://github.com/login/oauth/authorize?client_id=a1f50437553075286e71&redirect_uri=http://localhost:8080/login/oauth2/code/github">
+        깃 로그인
+    </a>
+</div>
+
+<div sec:authorize="hasAuthority('Resident')">
+    <a href="/logout">Logout</a>
+
+    <p th:text="${name}"></p>
+    <p th:text="${email == null} ? '' : ${email}"></p>
+</div>
+
+
+<div sec:authorize="hasAuthority('Resident')">
+    <div style="display: flex; justify-content: center;">
+        <table border="1" style="width: 1400px; border-collapse: collapse; text-align: center">
+            <thead>
             <tr>
                 <td style="width: 80px">번호</td>
                 <td>이름</td>
@@ -32,10 +51,9 @@
                 <td>출생신고서</td>
                 <td>사망신고서</td>
             </tr>
-        </thead>
+            </thead>
 
-        <tbody>
-        <th:block th:each="resident : ${residents}">
+            <tbody>
             <tr>
                 <td th:text="${resident.residentSerialNumber}"></td>
                 <td th:text="${resident.name}"></td>
@@ -48,30 +66,33 @@
                 <td>출생신고서</td>
                 <td>사망신고서</td>
             </tr>
-        </th:block>
-        </tbody>
-    </table>
 
-    <br>
-    <br>
+            <th:block th:each="family : ${familyList}">
+                <tr>
+                    <td th:text="${family.familyResident.residentSerialNumber}"></td>
+                    <td th:text="${family.familyResident.name}"></td>
+                    <td th:text="${family.familyResident.genderCode}"></td>
+                    <td th:text="${family.familyResident.birthDate}"></td>
+                    <td>
+                        <a th:href="'/family/' + ${family.familyResident.residentSerialNumber}">가족관계증명서</a>
+                    </td>
+                    <td>
+                        <a th:href="'/info/' + ${family.familyResident.residentSerialNumber}">주민등록등본</a>
+                    </td>
+                    <td>출생신고서</td>
+                    <td>사망신고서</td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+
+        <br>
+        <br>
+
+    </div>
 
 </div>
 
-<div style="display: flex; align-items: center; justify-content: center">
-    <th:block th:if="${page.prev == true}">
-        <a th:href="'/?pageNum=' + ${page.pageNum - 10} + '&size=' + ${page.size}" style="margin-right: 5px">&#5130;</a>
-    </th:block>
-
-    <th:block th:each="num : *{#numbers.sequence(page.pageStart, page.pageEnd - 1)}">
-        <div th:classappend="${page.pageNum == num} ? 'active' : ''">
-            <a class="pageNumber" th:href="'/?page=' + ${num} + '&size=' + ${page.size}" th:text="${num}"></a>
-        </div>
-    </th:block>
-
-    <th:block th:if="${page.next == true}">
-        <a th:href="'/?page=' + ${page.pageNum + 10} + '&size=' + ${page.size}">&#5125;</a>
-    </th:block>
-</div>
 
 </body>
 </html>

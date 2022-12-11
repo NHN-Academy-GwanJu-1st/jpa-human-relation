@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -21,12 +22,18 @@ import javax.transaction.Transactional;
 public class ResidentServiceImpl implements ResidentService {
 
     private final ResidentRepository residentRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public Resident registerResident(ResidentRegisterDTO residentRegisterDTO) {
 
+        System.out.println(residentRegisterDTO);
+
         Resident resident = new Resident().builder()
                 .name(residentRegisterDTO.getName())
+                .residentId(residentRegisterDTO.getId())
+                .password(passwordEncoder.encode(residentRegisterDTO.getPassword()))
+                .email(residentRegisterDTO.getEmail())
                 .residentRegistrationNumber(residentRegisterDTO.getResidentRegistrationNumber())
                 .genderCode(residentRegisterDTO.getGenderCode())
                 .birthDate(residentRegisterDTO.getBirthDate())
@@ -64,5 +71,15 @@ public class ResidentServiceImpl implements ResidentService {
     @Override
     public Resident findById(Long serialNumber) {
         return residentRepository.findById(serialNumber).orElseThrow(NotFoundResidentException::new);
+    }
+
+    @Override
+    public Resident findByEmail(String email) {
+        return residentRepository.findByEmail(email).orElseThrow(NotFoundResidentException::new);
+    }
+
+    @Override
+    public Resident findByResidentId(String residentId) {
+        return residentRepository.findByResidentId(residentId).orElseThrow(NotFoundResidentException::new);
     }
 }

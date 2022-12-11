@@ -16,4 +16,7 @@ public interface ResidentService {
 
     Resident findById(Long serialNumber);
 
+    Resident findByEmail(String email);
+
+    Resident findByResidentId(String residentId);
 }
